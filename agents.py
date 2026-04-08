@@ -4,8 +4,7 @@ Healthcare Multi-Agent System — Agent Definitions
 """
 
 import os
-from crewai import Agent
-from langchain_groq import ChatGroq
+from crewai import Agent, LLM
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -13,10 +12,10 @@ load_dotenv()
 
 def get_groq_llm():
     """Initialize the Groq LLM with LLaMA 3 70B."""
-    return ChatGroq(
+    return LLM(
+        model="groq/llama-3.3-70b-versatile",
         temperature=0.3,
-        groq_api_key=os.environ.get("GROQ_API_KEY"),
-        model_name="llama3-70b-8192",
+        api_key=os.environ.get("GROQ_API_KEY"),
     )
 
 
