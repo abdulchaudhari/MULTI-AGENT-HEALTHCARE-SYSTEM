@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI-Powered Healthcare Multi-Agent System using CrewAI and Groq — symptom analysis, diagnosis, treatment, and wellness planning.">
+    <title>MedCrew AI — Healthcare Multi-Agent System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <!-- ===================== HEADER ===================== -->
+    <header class="header">
+        <div class="header__container">
+            <div class="header__brand">
+                <div class="header__logo-box">
+                    <span class="header__logo-icon">🧬</span>
+                </div>
+                <div>
+                    <h1 class="header__title">MedCrew AI</h1>
+                    <p class="header__subtitle">Multi-Agent Healthcare System</p>
+                </div>
+            </div>
+            <div class="header__badges">
+                <span class="badge badge--teal">CrewAI</span>
+                <span class="badge badge--orange">Groq LLaMA 3</span>
+                <span class="badge badge--pink">5 Agents</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <!-- ===================== HERO ===================== -->
+        <section class="hero">
+            <div class="hero__content">
+                <h2 class="hero__heading">
+                    <span class="hero__heading-line">Your Symptoms.</span>
+                    <span class="hero__heading-line hero__heading-line--accent">Five AI Specialists.</span>
+                    <span class="hero__heading-line">One Report.</span>
+                </h2>
+                <p class="hero__description">
+                    Enter your symptoms below and our crew of 5 specialized AI agents will analyze, 
+                    diagnose, plan treatments, recommend medications, and prescribe a wellness strategy — 
+                    all powered by <strong>Groq's lightning-fast inference</strong>.
+                </p>
+            </div>
+        </section>
+
+        <!-- ===================== INPUT FORM ===================== -->
+        <section class="form-section" id="input-section">
+            <div class="form-card">
+                <div class="form-card__header">
+                    <h3 class="form-card__title">📋 Patient Information</h3>
+                    <span class="form-card__tag">Step 1</span>
+                </div>
+                <form id="patient-form" class="form">
+                    <div class="form__row form__row--triple">
+                        <div class="form__group">
+                            <label for="age" class="form__label">Age</label>
+                            <input type="number" id="age" name="age" class="form__input" placeholder="e.g. 35" min="0" max="150">
+                        </div>
+                        <div class="form__group">
+                            <label for="gender" class="form__label">Gender</label>
+                            <select id="gender" name="gender" class="form__input form__select">
+                                <option value="">Select...</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                                <option value="Prefer not to say">Prefer not to say</option>
+                            </select>
+                        </div>
+                        <div class="form__group">
+                            <label for="allergies" class="form__label">Known Allergies</label>
+                            <input type="text" id="allergies" name="allergies" class="form__input" placeholder="e.g. Penicillin, None">
+                        </div>
+                    </div>
+
+                    <div class="form__group">
+                        <label for="symptoms" class="form__label">Describe Your Symptoms *</label>
+                        <textarea id="symptoms" name="symptoms" class="form__textarea" rows="5" 
+                            placeholder="Describe your symptoms in detail. Include when they started, severity, what makes them better or worse..."
+                            required></textarea>
+                    </div>
+
+                    <div class="form__row form__row--double">
+                        <div class="form__group">
+                            <label for="medical_history" class="form__label">Medical History</label>
+                            <textarea id="medical_history" name="medical_history" class="form__textarea form__textarea--sm" rows="3"
+                                placeholder="e.g. Diabetes Type 2, Hypertension..."></textarea>
+                        </div>
+                        <div class="form__group">
+                            <label for="current_medications" class="form__label">Current Medications</label>
+                            <textarea id="current_medications" name="current_medications" class="form__textarea form__textarea--sm" rows="3"
+                                placeholder="e.g. Metformin 500mg, Lisinopril 10mg..."></textarea>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="submit-btn" class="btn btn--primary btn--block">
+                        <span class="btn__text">🚀 Launch AI Analysis</span>
+                        <span class="btn__loader" style="display:none;">
+                            <span class="spinner"></span>
+                            Agents Working...
+                        </span>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- ===================== AGENT PIPELINE ===================== -->
+        <section class="pipeline-section" id="pipeline-section" style="display:none;">
+            <h3 class="section-title">🤖 Agent Pipeline</h3>
+            <p class="section-subtitle">Watch your crew work through the analysis in real-time</p>
+            
+            <div class="pipeline">
+                <div class="pipeline__agent" id="agent-1" data-agent="symptom_analysis">
+                    <div class="pipeline__icon-box pipeline__icon-box--red">🔬</div>
+                    <div class="pipeline__info">
+                        <h4 class="pipeline__name">Symptom Analyzer</h4>
+                        <p class="pipeline__role">Medical Symptom Analyst</p>
+                    </div>
+                    <div class="pipeline__status">
+                        <span class="status-dot status-dot--idle"></span>
+                        <span class="status-text">Waiting</span>
+                    </div>
+                </div>
+                <div class="pipeline__connector"><span class="pipeline__arrow">→</span></div>
+
+                <div class="pipeline__agent" id="agent-2" data-agent="diagnosis">
+                    <div class="pipeline__icon-box pipeline__icon-box--teal">🩺</div>
+                    <div class="pipeline__info">
+                        <h4 class="pipeline__name">Diagnostic Specialist</h4>
+                        <p class="pipeline__role">Clinical Diagnostician</p>
+                    </div>
+                    <div class="pipeline__status">
+                        <span class="status-dot status-dot--idle"></span>
+                        <span class="status-text">Waiting</span>
+                    </div>
+                </div>
+                <div class="pipeline__connector"><span class="pipeline__arrow">→</span></div>
+
+                <div class="pipeline__agent" id="agent-3" data-agent="treatment_plan">
+                    <div class="pipeline__icon-box pipeline__icon-box--yellow">💊</div>
+                    <div class="pipeline__info">
+                        <h4 class="pipeline__name">Treatment Planner</h4>
+                        <p class="pipeline__role">Treatment Strategy Expert</p>
+                    </div>
+                    <div class="pipeline__status">
+                        <span class="status-dot status-dot--idle"></span>
+                        <span class="status-text">Waiting</span>
+                    </div>
+                </div>
+                <div class="pipeline__connector"><span class="pipeline__arrow">→</span></div>
+
+                <div class="pipeline__agent" id="agent-4" data-agent="medication">
+                    <div class="pipeline__icon-box pipeline__icon-box--mint">💉</div>
+                    <div class="pipeline__info">
+                        <h4 class="pipeline__name">Medication Advisor</h4>
+                        <p class="pipeline__role">Clinical Pharmacologist</p>
+                    </div>
+                    <div class="pipeline__status">
+                        <span class="status-dot status-dot--idle"></span>
+                        <span class="status-text">Waiting</span>
+                    </div>
+                </div>
+                <div class="pipeline__connector"><span class="pipeline__arrow">→</span></div>
+
+                <div class="pipeline__agent" id="agent-5" data-agent="wellness">
+                    <div class="pipeline__icon-box pipeline__icon-box--plum">🧘</div>
+                    <div class="pipeline__info">
+                        <h4 class="pipeline__name">Wellness Coach</h4>
+                        <p class="pipeline__role">Patient Wellness Advisor</p>
+                    </div>
+                    <div class="pipeline__status">
+                        <span class="status-dot status-dot--idle"></span>
+                        <span class="status-text">Waiting</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pipeline__progress-bar">
+                <div class="pipeline__progress-fill" id="progress-fill"></div>
+            </div>
+            <p class="pipeline__progress-text" id="progress-text">Initializing agents...</p>
+        </section>
+
+        <!-- ===================== RESULTS ===================== -->
+        <section class="results-section" id="results-section" style="display:none;">
+            <h3 class="section-title">📊 Analysis Results</h3>
+            <p class="section-subtitle">Comprehensive report from your AI healthcare crew</p>
+
+            <div class="results">
+                <div class="result-card result-card--red" id="result-symptom_analysis">
+                    <button class="result-card__header" onclick="toggleResult('symptom_analysis')">
+                        <div class="result-card__title-group">
+                            <span class="result-card__icon">🔬</span>
+                            <h4 class="result-card__title">Symptom Analysis</h4>
+                        </div>
+                        <span class="result-card__chevron" id="chevron-symptom_analysis">▼</span>
+                    </button>
+                    <div class="result-card__body" id="body-symptom_analysis">
+                        <div class="result-card__content" id="content-symptom_analysis"></div>
+                    </div>
+                </div>
+
+                <div class="result-card result-card--teal" id="result-diagnosis">
+                    <button class="result-card__header" onclick="toggleResult('diagnosis')">
+                        <div class="result-card__title-group">
+                            <span class="result-card__icon">🩺</span>
+                            <h4 class="result-card__title">Differential Diagnosis</h4>
+                        </div>
+                        <span class="result-card__chevron" id="chevron-diagnosis">▼</span>
+                    </button>
+                    <div class="result-card__body" id="body-diagnosis">
+                        <div class="result-card__content" id="content-diagnosis"></div>
+                    </div>
+                </div>
+
+                <div class="result-card result-card--yellow" id="result-treatment_plan">
+                    <button class="result-card__header" onclick="toggleResult('treatment_plan')">
+                        <div class="result-card__title-group">
+                            <span class="result-card__icon">💊</span>
+                            <h4 class="result-card__title">Treatment Plan</h4>
+                        </div>
+                        <span class="result-card__chevron" id="chevron-treatment_plan">▼</span>
+                    </button>
+                    <div class="result-card__body" id="body-treatment_plan">
+                        <div class="result-card__content" id="content-treatment_plan"></div>
+                    </div>
+                </div>
+
+                <div class="result-card result-card--mint" id="result-medication">
+                    <button class="result-card__header" onclick="toggleResult('medication')">
+                        <div class="result-card__title-group">
+                            <span class="result-card__icon">💉</span>
+                            <h4 class="result-card__title">Medication Recommendations</h4>
+                        </div>
+                        <span class="result-card__chevron" id="chevron-medication">▼</span>
+                    </button>
+                    <div class="result-card__body" id="body-medication">
+                        <div class="result-card__content" id="content-medication"></div>
+                    </div>
+                </div>
+
+                <div class="result-card result-card--plum" id="result-wellness">
+                    <button class="result-card__header" onclick="toggleResult('wellness')">
+                        <div class="result-card__title-group">
+                            <span class="result-card__icon">🧘</span>
+                            <h4 class="result-card__title">Wellness & Prevention Plan</h4>
+                        </div>
+                        <span class="result-card__chevron" id="chevron-wellness">▼</span>
+                    </button>
+                    <div class="result-card__body" id="body-wellness">
+                        <div class="result-card__content" id="content-wellness"></div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn btn--secondary btn--block" id="new-analysis-btn" onclick="resetForm()">
+                🔄 Start New Analysis
+            </button>
+        </section>
+
+        <!-- ===================== ERROR ===================== -->
+        <section class="error-section" id="error-section" style="display:none;">
+            <div class="error-card">
+                <span class="error-card__icon">⚠️</span>
+                <h3 class="error-card__title">Analysis Error</h3>
+                <p class="error-card__message" id="error-message"></p>
+                <button class="btn btn--secondary" onclick="resetForm()">Try Again</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- ===================== DISCLAIMER ===================== -->
+    <footer class="footer">
+        <div class="footer__disclaimer">
+            <div class="disclaimer-card">
+                <h4 class="disclaimer-card__title">⚕️ Medical Disclaimer</h4>
+                <p class="disclaimer-card__text">
+                    This AI system is for <strong>educational and demonstration purposes only</strong>. 
+                    It does NOT provide real medical advice, diagnosis, or treatment recommendations. 
+                    Always consult a qualified healthcare professional for medical concerns. 
+                    Never disregard professional medical advice or delay seeking it because of 
+                    information generated by this system.
+                </p>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            <p>Built with <strong>CrewAI</strong> + <strong>Groq</strong> + <strong>Flask</strong> — Neo Brutalism UI</p>
+            <p class="footer__copy">© 2026 MedCrew AI — Educational Project</p>
+        </div>
+    </footer>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
