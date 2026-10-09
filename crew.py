@@ -3,6 +3,7 @@ Healthcare Multi-Agent System — Crew Orchestration
 Manages the sequential execution of all healthcare agents
 """
 
+import time
 from crewai import Crew, Process
 from agents import (
     create_symptom_analyzer,
@@ -18,6 +19,11 @@ from tasks import (
     create_medication_task,
     create_wellness_task,
 )
+
+
+def on_task_finish(task_output):
+    """Pause briefly between sequential agent tasks to respect TPM token bucket refill."""
+    time.sleep(5)
 
 
 def run_healthcare_crew(patient_input: str) -> dict:
@@ -61,6 +67,7 @@ def run_healthcare_crew(patient_input: str) -> dict:
             wellness_task,
         ],
         process=Process.sequential,
+        task_callback=on_task_finish,
         verbose=True,
     )
 

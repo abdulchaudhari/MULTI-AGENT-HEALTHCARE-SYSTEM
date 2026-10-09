@@ -4,17 +4,26 @@ Healthcare Multi-Agent System — Agent Definitions
 """
 
 import os
+import litellm
 from crewai import Agent, LLM
 from dotenv import load_dotenv
 
 load_dotenv()
 
+# Configure LiteLLM retries to gracefully handle transient rate limits
+litellm.num_retries = 8
+
 
 def get_groq_llm():
-    """Initialize the Groq LLM with LLaMA 3 70B."""
+    """Initialize the Groq LLM."""
+    model_name = os.environ.get("GROQ_MODEL", "groq/openai/gpt-oss-120b")
+    if not model_name.startswith("groq/"):
+        model_name = f"groq/{model_name}"
+    max_tokens = int(os.environ.get("GROQ_MAX_TOKENS", "1200"))
     return LLM(
-        model="groq/llama-3.3-70b-versatile",
+        model=model_name,
         temperature=0.3,
+        max_tokens=max_tokens,
         api_key=os.environ.get("GROQ_API_KEY"),
     )
 

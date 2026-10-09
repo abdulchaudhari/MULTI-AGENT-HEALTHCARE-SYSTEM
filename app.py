@@ -4,9 +4,16 @@ Serves the Neo Brutalism UI and handles API requests
 """
 
 import os
+import sys
 import traceback
 from flask import Flask, render_template, request, jsonify
 from dotenv import load_dotenv
+
+# Ensure UTF-8 output encoding on Windows console
+if sys.stdout and hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+if sys.stderr and hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
 load_dotenv()
 

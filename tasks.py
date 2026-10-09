@@ -18,7 +18,8 @@ def create_symptom_analysis_task(agent, patient_input):
             f"3. Identify any symptom clusters or patterns\n"
             f"4. Flag any RED FLAG symptoms requiring urgent attention\n"
             f"5. Note the duration and progression of symptoms\n"
-            f"6. Provide an overall urgency rating (1-10)"
+            f"6. Provide an overall urgency rating (1-10)\n\n"
+            f"Format with clean markdown. Keep the analysis concise, structured, and under 250 words."
         ),
         expected_output=(
             "A structured symptom analysis report containing:\n"
@@ -36,18 +37,17 @@ def create_diagnostic_task(agent, symptom_task):
     """Task 2: Generate differential diagnoses from symptom analysis."""
     return Task(
         description=(
-            "Based on the symptom analysis provided, generate a comprehensive "
-            "differential diagnosis:\n\n"
-            "1. List the top 5 most likely diagnoses ranked by probability\n"
-            "2. For each diagnosis, explain the supporting evidence from the symptoms\n"
-            "3. Identify key distinguishing factors between similar conditions\n"
+            "Based on the symptom analysis provided, generate a differential diagnosis:\n\n"
+            "1. List the top 3 to 5 most likely diagnoses ranked by probability\n"
+            "2. For each diagnosis, briefly explain supporting evidence\n"
+            "3. Identify key distinguishing factors between conditions\n"
             "4. Note any additional tests or examinations needed to confirm\n"
-            "5. Consider both common and uncommon presentations\n"
-            "6. Provide a confidence level for each diagnosis (high/medium/low)"
+            "5. Provide a confidence level for each diagnosis (high/medium/low)\n\n"
+            "Format with clean markdown. Keep the report focused, structured, and under 250 words."
         ),
         expected_output=(
             "A differential diagnosis report containing:\n"
-            "- Top 5 ranked diagnoses with probability estimates\n"
+            "- Top ranked diagnoses with probability estimates\n"
             "- Supporting evidence for each diagnosis\n"
             "- Distinguishing factors between conditions\n"
             "- Recommended confirmatory tests\n"
@@ -62,20 +62,19 @@ def create_treatment_task(agent, diagnostic_task):
     """Task 3: Create evidence-based treatment plans."""
     return Task(
         description=(
-            "Based on the differential diagnosis, create a comprehensive treatment plan:\n\n"
+            "Based on the differential diagnosis, create an evidence-based treatment plan:\n\n"
             "1. Immediate interventions (if urgently needed)\n"
             "2. Primary treatment strategy for the most likely diagnosis\n"
             "3. Alternative treatment approaches if primary diagnosis is ruled out\n"
             "4. Short-term management plan (1-4 weeks)\n"
-            "5. Long-term management strategy\n"
-            "6. Follow-up schedule and monitoring parameters\n"
-            "7. When to seek emergency care"
+            "5. Follow-up schedule and emergency care triggers\n\n"
+            "Format with clean markdown. Keep the plan practical, structured, and under 250 words."
         ),
         expected_output=(
             "A structured treatment plan containing:\n"
             "- Immediate interventions (if needed)\n"
             "- Primary and alternative treatment strategies\n"
-            "- Short-term and long-term management plans\n"
+            "- Short-term management plans\n"
             "- Follow-up schedule\n"
             "- Emergency care triggers"
         ),
@@ -89,15 +88,12 @@ def create_medication_task(agent, treatment_task):
     return Task(
         description=(
             "Based on the treatment plan, recommend appropriate medications:\n\n"
-            "1. Primary medications with specific drug names\n"
-            "2. Dosage guidelines (starting dose, maintenance dose, maximum dose)\n"
-            "3. Administration route and frequency\n"
-            "4. Duration of therapy\n"
-            "5. Common and serious side effects to watch for\n"
-            "6. Drug interactions to be aware of\n"
-            "7. Contraindications and precautions\n"
-            "8. Monitoring parameters (labs, vitals, etc.)\n"
-            "9. Over-the-counter alternatives where appropriate"
+            "1. Primary medications with specific drug names and dosage guidelines\n"
+            "2. Administration route, frequency, and duration\n"
+            "3. Common and serious side effects to watch for\n"
+            "4. Key drug interactions and contraindications\n"
+            "5. Over-the-counter alternatives where appropriate\n\n"
+            "Format with clean markdown. Keep the medication guide clear, safe, and under 250 words."
         ),
         expected_output=(
             "A medication recommendation report containing:\n"
@@ -120,23 +116,18 @@ def create_wellness_task(agent, medication_task):
             "Create a holistic wellness and prevention plan to complement the medical treatment:\n\n"
             "1. Dietary recommendations specific to the condition\n"
             "2. Exercise and physical activity guidelines\n"
-            "3. Sleep hygiene recommendations\n"
-            "4. Stress management and mental health strategies\n"
-            "5. Lifestyle modifications for disease management\n"
-            "6. Preventive measures to avoid recurrence\n"
-            "7. Support resources (support groups, apps, educational materials)\n"
-            "8. Weekly wellness routine template\n"
-            "9. Warning signs that should prompt medical attention"
+            "3. Sleep hygiene and stress management strategies\n"
+            "4. Lifestyle modifications and preventive measures\n"
+            "5. Warning signs that should prompt medical attention\n\n"
+            "Format with clean markdown. Keep the advice actionable, motivating, and under 250 words."
         ),
         expected_output=(
             "A comprehensive wellness plan containing:\n"
-            "- Dietary plan with specific food recommendations\n"
-            "- Exercise program with frequency and intensity\n"
+            "- Dietary recommendations\n"
+            "- Exercise guidance\n"
             "- Sleep and stress management strategies\n"
-            "- Lifestyle modifications checklist\n"
             "- Prevention measures\n"
-            "- Weekly wellness routine\n"
-            "- Warning signs reference card"
+            "- Warning signs reference"
         ),
         agent=agent,
         context=[medication_task],
